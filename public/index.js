@@ -12,7 +12,7 @@ function renderBook(book) {
         <div class="col-sm-3">
             <div class="card" style="width: 100%;">
                 ${book.imageURL ? `
-                    <img class="card-img-top" src="${book.imageURL}" />
+                    <img class="card-img-top" src=".${book.imageURL}" />
                 `
                 : ``}
                 <div class="card-body">
