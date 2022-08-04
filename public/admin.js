@@ -38,13 +38,17 @@ async function main() {
 
     let form = document.querySelector('#form')
     document.querySelector('#submit').addEventListener('click', function(){
+        let id = 1
+        if (books.length>0){
+            id = books.pop().id + 1
+        }
         fetch('http://localhost:3001/addBook', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                'id': books.pop().id + 1,
+                'id': id,
                 'title': form.title.value,
                 'year': new Date().getFullYear,
                 'description': form.desc.value,

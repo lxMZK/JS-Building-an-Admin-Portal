@@ -1,0 +1,66 @@
+const express = require('express')
+const books = express.Router()
+const Book = require('../models/books')
+const seeder = require('../seeders/books')
+
+books.get('/seed', (req, res) => {
+    Book.insertMany(seeder)
+        .then(res.status(200).json({
+            message: 'Seed successful'
+        }))
+        .catch(res.status(400).json({
+            message: 'Seed unsuccessful'
+        }))
+})
+
+books.get('/', (req, res) => {
+    Book.find()
+        .then(foundBooks => {
+            res.status(200).json(foundBooks)
+        })
+        .catch(() => {
+            res.status(500).json({ message: 'err' })
+        })
+})
+
+books.post('/', (req,res) => {
+    Book.create(req.body)
+        .then(newBook =>{
+            res.status(200).json(newBook)
+        })
+        .catch(()=>{
+            res.status(404).json({message:'err'})
+        })
+})
+
+books.get('/:id', (req, res) => {
+    Book.findById(req.params.id)
+        .then(foundBook => {
+            res.status(200).json(foundBook)
+        })
+        .catch(() => {
+            res.status(404).json({ message: 'err' })
+        })
+})
+
+books.put('/:id', (req, res) => {
+    Book.findByIdAndUpdate(req.params.id, req.body)
+        .then(updatedBook => {
+            res.status(200).json(updatedBook)
+        })
+        .catch(() => {
+            res.status(404).json({ message: 'err' })
+        })
+})
+
+books.delete('/:id', (req, res) => {
+    Book.findByIdAndDelete(req.params.id)
+        .then(() => {
+            res.status(200).json({message: 'Successful Deletion'})
+        })
+        .catch(() =>{
+            res.status(404).json({message:'err'})
+        })
+})
+
+module.exports = books
